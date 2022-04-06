@@ -1,0 +1,693 @@
+---
+title: "Curso R"
+output: html_notebook
+---
+
+Bem vindo ao primeiro curso de R da EEL Racing !! 
+A seguir seguem os codigos para prosseguirmos com nosso curso acerca dos principais comandos basicos para iniciarmos nossa jornada. 
+
+O mais fundamental antes de iniciarmos e instalar os pacotes fundamentais para o R:
+
+```{r}
+
+install.packages("tidyverse")
+installed.packages("ggplot2")
+
+```
+
+"Chamando" os Pacotes para sua sessão atual do R:
+
+```{r}
+
+library(tidyverse)
+library(ggplot2)
+
+```
+
+
+
+    Trabalhando com Números (Básico):
+
+Assim como muitas outras linguagens de programacao, o R facilmente realiza operacoes matematicas e lida muito bem com numeros. Podemos tanto trabalhar com numeros em si, como com variaveis que possuem valores numericos: 
+
+```{r}
+
+2 + 4
+
+A = 2
+B = 4
+
+A + B
+
+A^B
+
+```
+
+Os operadores aritmeticos comuns de programacao tambem estao presentes. O operador de divisao (/), de exponenciacao (^) e o módulo (%%) tambem estao presentes. O operador %% indica o resto da divisao do numero da esquerda pelo da direita (por exemplo 4 %% 2 resultaria em 0 e 5 %% 2 resultaria em 1). 
+
+```{r}
+
+A = 2
+B = 4
+C = 15
+
+2 - 4
+A - B
+
+A^B
+A/B
+
+4 %% 2
+C %% A
+
+```
+
+
+    
+    
+    
+    Trabalhando com Caracteres: 
+
+Caracteres (ou strings) sao compostos basicamente de palavras, frases e/ou paragrafos. Para criarmos uma variavel desta classe, colocamos o que desejamos armazenar entre aspas. Vamos definir nossos nomes nas variaveis "Nome": 
+
+```{r}
+
+Nome = "Henrique"
+
+Sobrenome = "Azank"
+
+Ultimo_Nome = "dos Santos"
+
+paste("Olá meu nome é",Nome, Sobrenome, Ultimo_Nome, sep = " ")
+
+```
+    
+    
+    
+    
+    
+    Trabalhando com Fatores: 
+
+Vamos imaginar que os 6 cursos da EEL sao designados de 1 ate 6. Digamos que 10 alunos da EEL sejam selecionados para uma pesquisa. Vamos analisar seus cursos: 
+
+```{r}
+
+Cursos_Alunos = c(1,5,6,3,2,4,5,4,1,5)
+Cursos_Alunos = factor(Cursos_Alunos)
+Cursos_Alunos
+
+```
+
+Como observamos pelo resultado do console, a variavel "Cursos_Alunos" é um fator de 6 niveis (levels). Suponhamos agora que queremos substituir estes valores pela sigla do curso. Podemos realizar isso modificando os niveis: 
+
+```{r}
+
+Cursos_Alunos = c(1,5,6,3,2,4,5,4,1,5)
+Cursos_Alunos = factor(Cursos_Alunos, labels = c("EB","EQ","EM","EF","EA","EP"))
+Cursos_Alunos 
+
+```
+
+A utilizar fatores facilita muito as analises que realizamos em R, sendo que muitos algoritmos e funcoes necessitam que os dados sejam dispostos na forma de fatores. Um exemplo de utilizacao seria determinar quantos alunos fazem parte de cada curso:
+
+```{r}
+
+table(Cursos_Alunos)
+
+```
+
+
+
+
+
+    Trabalhando com variaveis logicas
+    
+As variaveis logicas (ou booleanas) sao importantissimas em analise de dados. Em R, podem ser TRUE ou FALSE (T ou F). Quando realizamos comparacoes entre variaveis, numeros ou dados, as variaveis logicas sao o retorno. Suponhamos que possuimos 10 notas de alunos. Podemos utilizar (>,<,<=,>=) para comparar cada uma das notas com um numero, vetor ou outros objetos:
+
+```{r}
+
+Notas_Alunos=c(5,7,8,6,9,10,7,9,8,10)
+Notas_Alunos > 7
+
+```
+
+#Obtendo Sub-Vetores: Quando Trabalhamos com estruturas de dados como vetores, matrizes, data frames e etc. devemos estar capacitados a extrair informacoes de interessel, ou seja, obter subseccoes dessas estruturas.
+
+Um exemplo seria extrair a terceira nota no vetor "Notas_Alunos" criado anteriormente: 
+
+```{r}
+
+Notas_Alunos[3]
+Notas_Alunos[c(2,3)]
+
+```
+
+```{r}
+
+Index = Notas_Alunos > 7
+Notas_Alunos[Index]
+
+```
+
+# A funcao mean(x) funciona de forma distinta dependendo da classe de objeto que pertence X:
+
+Sendo X um vetor numerico, mean(X) resulta na media de valores do vetor: 
+
+```{r}
+
+mean(Notas_Alunos)
+
+```
+
+Se X for um vetor logico, como no caso de "Index", mean(X) representa a proprocao de TRUE, ou seja, o numero de TRUES dividido pelo total de observacoes: 
+
+```{r}
+
+Notas_Alunos > 7
+mean(Notas_Alunos > 7)
+
+```
+
+Outros operadores logicos de interesse sao os sinais de igualdade (==), desigualdade (!=), o operador E (&) e o operador ou (|):
+
+```{r}
+
+3 == 3
+3 != 3
+
+```
+
+```{r}
+
+TRUE & TRUE
+TRUE & FALSE
+
+```
+
+```{r}
+
+TRUE | TRUE
+TRUE | FALSE
+
+```
+
+
+
+
+
+    Trabalhando com Vetores e Matrizes:
+
+Assim como a maioria das linguagens de programacao, o R tambem pode realizar operacoes com vetores e matrizes. A partir da fucao c(), podemos criar os vetores ditos atomicos: 
+
+```{r}
+
+Vetor_Atom = c(0,1,2)
+dim(Vetor_Atom)
+
+```
+
+Para criarmos vetores matematicos, podemos utilizar a funcao cbind(): 
+
+```{r}
+
+Vetor_Mat = cbind(0,1,2)
+dim(Vetor_Mat)
+
+
+```
+
+O resultado da funcao dim(Vetor_Mat) indica que o vetor consiste na verdade em uma matriz de uma linha e 3 colunas. Podemos construir matrizes mais elaboradas de duas formas: 
+
+I - Criando multiplos vetores linha e ultilizando o comando rbinb() ou;
+
+II - Utilizando o comando matrix(..., nrow = l, ncol = c), que permite especificar os dados e o numero de linhas e colunas.
+
+Vamos agora construir a mesma matriz com os dois metodos: 
+
+```{r}
+
+A = cbind(0,2,5,8)
+B = cbind(5,6,8,4)
+
+Matrix_AB = rbind(A,B)
+Matrix_AB
+
+```
+
+```{r}
+
+Dados = c(A,B)
+Matrix_AB_2 = matrix(Dados, nrow = 2, ncol = 4)
+Matrix_AB_2
+
+```
+
+
+
+
+
+    Trabalhando com Listas:
+
+Listas sao objetos muito versatis em R. Tratam-se de objetos que podem armazenar diferentes classes de dados em um unico lugar. Sua utilidade e muito evidenciada quando desejamos programar testes estatisticos ou armazenar resultados referentes nossas analises.
+
+Iniciamos construindo uma lista com suas informacoes:
+
+```{r}
+
+Nome = "Henrique"
+Idade = 21
+Curso = "Engenharia Bioquímica"
+Altura_cm = 175
+
+Infor = list("Nome do Participante" = Nome,"Idade do Participante" = Idade,"Curso" = Curso,"Altura em centimetros" = Altura_cm)
+
+Infor
+
+```
+
+```{r}
+
+Infor$`Nome do Participante`
+
+```
+
+A grande utilidade das listas pode ser muito evidenciada na comunicacao de resultados de regressoes lineares:
+
+```{r}
+
+summary(lm(mpg ~ wt,mtcars))
+
+```
+
+
+
+
+    Trabalhando com Estrututuras de Controle 
+
+As estruturas de controle sao essenciais para trabalharmos de maneira sistematica e programar algoritmos e funcoes. 
+
+
+
+Estrutura IF:
+
+```{r}
+
+A = rnorm(1, mean = 10, sd = 1)
+
+if(A > 10){
+    
+    print("O número é maior que 10")
+    
+}
+
+
+```
+
+
+
+Estrutura IF com condicao TRUE:
+
+```{r}
+
+if(TRUE){
+    
+    print("Nao sou o impostor .... TRUE da TRUE")
+    
+}
+
+```
+
+
+
+Estrutura IF-ELSE:
+
+```{r}
+
+# Programa Amoung Us
+
+Azank = "Impostor"
+
+if(Azank == "Impostor"){
+    
+    print("Votem no Azank aí ... ele tava na eletrica")
+    
+}else{
+    
+    print("Não Vota no Azank, ele tava na Admin")
+    
+}
+
+```
+
+
+
+Estrutura FOR: 
+
+```{r}
+
+for (i in c(1,2,3)) {
+    
+    print(paste("O valor de i nessa iteracao é = ",i))
+    
+}
+
+```
+
+
+```{r}
+
+D = vector()
+
+for (i in c(1,3,5,10)) {
+    
+    D <- c(D,2*i)
+}
+
+D
+
+```
+
+
+
+Estrutura WHILE: Realiza o conjunto de codigos ate que a condicao seja desrespeitada:
+
+```{r}
+
+Valor = 0
+
+while (Valor < 10) {
+    
+    print(Valor)
+    Valor = Valor + 1
+    
+}
+
+```
+
+```{r}
+
+# Exemplo de LOOP INFINITO (Apertar ESC para SAIR DO LOOP)
+
+while (TRUE) {
+    print("TRUE == TRUE")
+}
+
+```
+
+
+
+Estrutura REPEAT: Loop Infinito que somente se interrompe com o argumento BREAK
+
+```{r}
+
+Var = 0
+
+repeat{
+    
+    Var = Var + 1
+    
+    print(Var)
+    
+    if (Var == 10) {
+        break
+    }
+}
+
+```
+
+
+
+
+
+    DATA FRAMES E DPLYR:
+
+As formas mais importantes de objetos em R sao os chamados DATA FRAMES. Esses objetos funcionam como verdadeiras planilhas eletronicas. Cada coluna representa uma variavel (ou atributo)
+
+Montando um Data Frame com nossas informacoes (Agora):
+
+```{r}
+
+Nomes = c("Henrique","Tek")
+Idades = c(21,22)
+Cidade = c("Limeira","Lorena")
+Coffee = as.factor(c("S","S"))
+filmes = c(300,200)
+
+DADOS_NOSSOS = data.frame(Nomes,Idades,Cidade,Coffee)
+DADOS_NOSSOS
+
+```
+
+Editando Data Frames:
+
+```{r}
+
+fix(DADOS_NOSSOS)
+
+```
+
+
+Digamos que gostaríamos de especificar uma linha do Data Frame (uma determinada pessoa). Podemos tanto descobrir (manualmente) em que linha se encontra a pessoa, ou utilizar operadores logicos para descobrirmos:
+
+```{r}
+
+# Manualmente
+
+DADOS_NOSSOS[1,]
+
+# Utilizando operadores lógicos
+
+Linha <- DADOS_NOSSOS$Nomes == "Henrique"
+DADOS_NOSSOS[Linha,]
+
+```
+
+
+
+
+
+    Avaliando os Personagens da Franquia Star Wars:
+
+O data set de personagens de Star Wars: 
+
+```{r}
+
+starwars
+
+```
+
+Utilizando a funcao GLIMPSE para vermos as variaveis dentro de um dataset:
+
+```{r}
+
+library(dplyr)
+glimpse(starwars)
+
+```
+
+Obtendo uma coluna em especifico usando o operador ($):
+
+```{r}
+
+starwars$name
+starwars$height
+
+class(starwars$height)
+
+#Computando a Media de altura dos personagens 
+
+mean(starwars$height)
+mean(starwars$height, na.rm = T)
+
+
+
+```
+
+
+
+
+
+
+    Verbos do DPLYR
+
+Os verbos do pacote DPLYR sao utilizados para editar, manipular, filtrar, ordenar e sumarizar os dados contidos nos data frames que utilizamos em R. Esses Verbos sao utilizados em conjunto com o Operador PiPe (%>%). Vamos aprender sobre estes verbos utilizando o dataset sobre star wars. 
+
+Inicialmente, vamos duplicar esses dados em uma nova variavel (de forma a nao modificarmos o original)
+
+```{r}
+
+Star = starwars
+
+```
+
+    
+    
+    Ordenando os Dados:
+
+Podemos organizar os data frames em funcao do valor de uma variavel. Por exemplo, vamos organizar os personagens de star wars em funcao de sua altura. Para isso, utilizamos o verbo ARRANGE: 
+
+```{r}
+
+#Ordem Decrescente:
+
+Star %>%
+    arrange(height)
+
+```
+
+```{r}
+
+#Ordem Ascendente: Para irmos do maior para o menor, adicionamos a funcao desc()
+
+Star %>%
+    arrange(desc(height))
+
+```
+
+
+
+    Filtrando Observacoes: 
+    
+Vamos supor agora que desejamos saber quais personagens vieram de um determinado planeta (especificado na variavel homeworld). Utilizamos a funcao FILTER. Sabemos que Luke Skywalker e Anakin Skywalker (e por consequencia Darth Vader) vieram do planeta deserto de Tatooine. Mas quem alem deles vem de la ? 
+
+```{r}
+
+Star %>%
+    filter(homeworld == "Tatooine")
+
+```
+
+
+
+    Alterando Unidades/Variaveis e selecionando colunas:
+    
+Vamos supor que gostamos bastante dos nossos dados, mas nao precisamos de todas as variaveis. O Verbo SELECT permite especificar quais variaveis desejamos manter para nossas analises. 
+    
+Digamos tambem que uma das variaveis (como a altura/height) estao com unidades nao muito "favoraveis" para nossas analises. Podemos Alterar a coluna de forma a transformar seus valores ou ainda criar uma nova coluna utilizando o Verbo MUTATE. Digamos que a altura original esteja em centimetros e desejamos ver em metros: 
+
+```{r}
+
+Star_2 = starwars
+
+Star_2 %>%
+    select(name,height,mass) %>%
+    mutate(Altura_m = height/100)
+    
+
+```
+
+
+
+        Utilizando os Verbos para Respondermos Perguntas
+
+Vamos agora utilizar os verbos que aprendemos para responder uma pergunta em relacao aos nossos dados:
+
+Vamos supor agora que queremos saber qual o personagem mais "gordinho" da franquia. Temos as informações de altura e massa de cada um dos personagens. Podemos entao calcular o IMC (peso/altura^2) de cada personagem e ver em ordem crescente os personagens mais "gordinhos": 
+
+```{r}
+
+#Copiando os Resultados anteriores:
+
+Star_2 = starwars
+
+Star_3 = Star_2 %>%
+    select(name,height,mass) %>%
+    mutate(Altura_m = height/100, Massa_Kg = mass)%>%
+    select(name,Altura_m,Massa_Kg)
+
+Star_3
+
+```
+
+```{r}
+
+#Calculando o IMC e ordenando de forma decrescente:
+
+Star_3 = Star_3 %>%
+    mutate(IMC = Massa_Kg/Altura_m^2)%>%
+    arrange(desc(IMC))
+
+Star_3
+
+```
+
+
+
+
+Podemos encontrar uma introducao sobre o pacote DPLYR em:
+
+```{r}
+
+vignette("dplyr")
+
+```
+
+
+
+
+
+    Basico de Graficos com GGPLOT2
+
+Uma das grandes forcas do R e sua capacidade de construir representacoes graficas poderosas sem muita dificuldade. Aqui iremos mostrar 
+
+Grafico de pontos basico:
+
+```{r}
+
+library(ggthemes)
+library(ggplot2)
+
+ggplot(mtcars, aes(x = mpg,y = wt))+
+    geom_point()
+
+```
+
+Grafico com tema "STATA":
+
+```{r}
+
+library(ggthemes)
+library(ggplot2)
+
+ggplot(mtcars, aes(x = mpg,y = wt))+
+    geom_point()+
+    theme_stata()
+
+
+```
+
+Adicionando as Legendas:
+
+```{r}
+
+ggplot(mtcars, aes(x = mpg,y = wt))+
+    geom_point()+
+    theme_stata()+
+    labs(
+        title = "Peso vs. Autonomia",
+        x = "Autonomia (mpg)",
+        y = "Peso (Toneladas)")
+
+```
+
+Colorindo os pontos em funcao de outra variavel e introduzindo uma legenda:
+
+```{r}
+
+#Pacotes
+
+library(ggthemes)
+library(ggplot2)
+
+ggplot(mtcars, aes(x = mpg,y = wt, color = as.factor(cyl)))+
+    geom_point(size = 3)+
+    theme_stata()+
+    labs(title = "Peso vs. Autonomia",
+        x = "Autonomia (mpg)",
+        y = "Peso (Toneladas)",
+        color = "Cilindros")+
+    theme(legend.position = c(0.8,0.7))
+
+```
+
+
